@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>同步接口 | 叶小忻</title>
+<meta name="description" content="大家好！我是叶小忻，一名小萌新，很高兴你来参观我的博客，请多指教！">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" href="https://yhcyxx.github.io/favicon.ico?v=1686730719718">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/papercss@1.6.1/dist/paper.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://yhcyxx.github.io/styles/main.css">
+
+
+  
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
+  
+
+  
+
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+  </head>
+  <body>
+  
+    <nav class="navbar border fixed split-nav">
+  <div class="nav-brand">
+    <h3><a href="https://yhcyxx.github.io">叶小忻</a></h3>
+  </div>
+  <div class="collapsible">
+    <input id="collapsible1" type="checkbox" name="collapsible1">
+    <button>
+      <label for="collapsible1">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </label>
+    </button>
+    <div class="collapsible-body">
+      <ul class="inline">
+        
+          <li>
+            
+              <a href="/" class="menu">
+                首页
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/archives" class="menu" target="_blank">
+                归档
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/tags" class="menu">
+                标签
+              </a>
+            
+          </li>
+        
+          <li>
+            
+              <a href="/post/about" class="menu">
+                关于
+              </a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div id="top" class="row site">
+      <div class="sm-12 md-8 col">
+        <div class="paper">
+          <article class="article">
+            <h1>同步接口</h1>
+            <p class="article-meta">
+              2023-05-19
+              
+            </p>
+            
+            <div class="post-content" v-pre>
+              <h2 id="1-获取token">1、获取TOKEN</h2>
+<p>测试环境：https://dev.romens.cloud/mh/oauth/token 获取登录token</p>
+<h3 id="11-请求描述">1.1 请求描述</h3>
+<ol>
+<li>
+<p>请求方式: POST</p>
+</li>
+<li>
+<p>请求URL : <a href="https://xn--eqrt2g/mh/oauth/token">/mh/oauth/token</a></p>
+</li>
+<li>
+<p>编码格式: application/json;charset=utf-8</p>
+</li>
+<li>
+<p>是否需要登录: 否</p>
+</li>
+</ol>
+<h3 id="12-请求参数说明">1.2  请求参数说明</h3>
+<h4 id="121-请求参数">1.2.1  请求参数</h4>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必填</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>appcode</td>
+<td>string</td>
+<td>是</td>
+<td>由雨诺提供</td>
+</tr>
+<tr>
+<td>appsecret</td>
+<td>string</td>
+<td>是</td>
+<td>由雨诺提供</td>
+</tr>
+<tr>
+<td>grant_type</td>
+<td>string</td>
+<td>是</td>
+<td>固定为：client_credentials</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-请求示例">1.3  请求示例</h3>
+<pre><code class="language-json">{
+&quot;appcode&quot;:&quot;wms_oms_b2c_uat&quot;,
+&quot;appsecret&quot;:&quot;70cd586d1eb92ae710544897cd8131d57294ea47&quot;,
+&quot;grant_type&quot;:&quot;client_credentials&quot;
+}
+</code></pre>
+<h3 id="14-返回参数说明">1.4 返回参数说明</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>参数说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>code</td>
+<td>string</td>
+<td>接口结果代码</td>
+<td>返回状态码，0成功，其余失败</td>
+</tr>
+<tr>
+<td>msg</td>
+<td>string</td>
+<td>返回结果描述</td>
+<td>code =0 时，只为成功</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Object</td>
+<td>返回的数据</td>
+<td>code != 0 时,返回值 data 为 null</td>
+</tr>
+<tr>
+<td>access_token</td>
+<td>string</td>
+<td>请求token</td>
+<td></td>
+</tr>
+<tr>
+<td>expires_in</td>
+<td>string</td>
+<td>有效时长</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="15-返回结果示例">1.5 返回结果示例</h3>
+<pre><code class="language-json">{
+	&quot;code&quot;: 200,
+	&quot;msg&quot;: &quot;成功!&quot;,
+	&quot;data&quot;: {
+		&quot;access_token&quot;: &quot;asdfasdfasdfasdfasdfasdfasdf.eyJpYXQiOjE2NjY1OTE2MTQsInR5cGUiOiJBUFAiLCJrZXkxIjoid21zLWIyYy1nM2VycC1hcGkiLCJrZXkyIjoid21zLWIyYy1nM2VycC1hcGkiLCJleHAiOjE2NjY1OTg4MTR9.l21a2s-axDTxDfw4nCbC0ENzxIServj6s8WhgnbyVnU&quot;,
+		&quot;expires_in&quot;: &quot;7200&quot;
+	}
+}
+</code></pre>
+<h3 id="16-token-的使用">1.6 token 的使用</h3>
+<p>需要登录的接口访问时请求头添加</p>
+<p>Authorization : [上一步获取的token]</p>
+<h2 id="2-商品资料同步接口">2.  商品资料同步接口</h2>
+<p>测试环境：https://dev.romens.cloud/mh/kapi/app/rm_se_b2c_oms/GoodsMessage 获取ERP商品详细信息</p>
+<h3 id="21-请求描述">2.1 请求描述</h3>
+<ol>
+<li>请求方式: POST</li>
+<li>请求URL :mh/kapi/app/rm_se_b2c_oms/GoodsMessage</li>
+<li>编码格式: application/json</li>
+<li>是否需要登录: 是</li>
+</ol>
+<h3 id="22-请求参数说明">2.2  请求参数说明</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必填</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goodsCode</td>
+<td>string</td>
+<td>是</td>
+<td>商品编码</td>
+</tr>
+<tr>
+<td>goodsName</td>
+<td>string</td>
+<td>否</td>
+<td>商品通用名</td>
+</tr>
+<tr>
+<td>aliasName</td>
+<td>string</td>
+<td>否</td>
+<td>商品名</td>
+</tr>
+<tr>
+<td>specs</td>
+<td>string</td>
+<td>否</td>
+<td>规格</td>
+</tr>
+<tr>
+<td>origination</td>
+<td>string</td>
+<td>否</td>
+<td>产地</td>
+</tr>
+<tr>
+<td>manufacturer</td>
+<td>string</td>
+<td>否</td>
+<td>生产厂家</td>
+</tr>
+<tr>
+<td>barcode</td>
+<td>string</td>
+<td>否</td>
+<td>商品条码</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>string</td>
+<td>否</td>
+<td>商品分类ID</td>
+</tr>
+<tr>
+<td>groupName</td>
+<td>string</td>
+<td>否</td>
+<td>商品分类</td>
+</tr>
+<tr>
+<td>isAmountVariety</td>
+<td>int</td>
+<td>否</td>
+<td>金额品种</td>
+</tr>
+<tr>
+<td>taxRate</td>
+<td>BigDecimal</td>
+<td>否</td>
+<td>税率%(13%传13.00)</td>
+</tr>
+<tr>
+<td>isPrescription</td>
+<td>int</td>
+<td>否</td>
+<td>处方药标志</td>
+</tr>
+<tr>
+<td>sourceSys</td>
+<td>string</td>
+<td>是</td>
+<td>来源系统（G3_ERP）</td>
+</tr>
+<tr>
+<td>owner</td>
+<td>string</td>
+<td>是</td>
+<td>业务组织	rmcloud（暂时，后期可能有多个）康美用Org-00004</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-请求示例">2.3  请求示例</h3>
+<pre><code class="language-json">   {
+ &quot;goodsCode&quot;:&quot;11&quot;,
+ &quot;goodsName&quot;:&quot;测试商品&quot;,
+ &quot;aliasName&quot; :&quot;测试商品01&quot;,
+ &quot;specs&quot;:&quot;8片/板&quot;,
+ &quot;origination&quot;:&quot;山东青岛&quot;, 
+ &quot;manufacturer&quot;:&quot;雨诺&quot;,
+ &quot;barcode&quot; : &quot; 000001&quot;,
+ &quot;groupID&quot; : &quot;01&quot;,
+ &quot;groupName&quot;:&quot;西药&quot;,
+ &quot;taxRate&quot;:13.00,   
+ &quot;isAmountvariety&quot; :1 ,
+ &quot;isPrescription&quot;: 1,
+ &quot;sourcesys&quot; : &quot;G3ERP&quot;,
+ &quot;owner&quot;:&quot;rmcloud&quot;
+} 
+</code></pre>
+<h3 id="24-返回参数说明">2.4 返回参数说明</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>参数说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>errorCode</td>
+<td>string</td>
+<td>状态码</td>
+<td></td>
+</tr>
+<tr>
+<td>message</td>
+<td>string</td>
+<td>错误信息</td>
+<td></td>
+</tr>
+<tr>
+<td>success</td>
+<td>boolean</td>
+<td>是否成功</td>
+<td></td>
+</tr>
+<tr>
+<td>data</td>
+<td>Object</td>
+<td>成功信息</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-返回结果示例">2.5 返回结果示例</h3>
+<pre><code class="language-json">{
+ &quot;code&quot;: 5002,
+ &quot;msg&quot;: &quot;非法授权&quot;
+}
+{
+ &quot;message&quot;: &quot;[:rmcloud000:不存在]&quot;,
+ &quot;code&quot;: &quot;400&quot;,
+ &quot;success&quot;: false
+}
+{
+ &quot;data&quot;: &quot;操作成功&quot;,
+ &quot;errorCode&quot;: &quot;success&quot;,
+ &quot;success&quot;: true
+}
+{
+ &quot;message&quot;: &quot;[来源系统: 不能为空]&quot;,
+ &quot;errorCode&quot;: &quot;fail&quot;,
+ &quot;success&quot;: false
+}
+
+</code></pre>
+<h2 id="3-商品分类同步接口">3.  商品分类同步接口</h2>
+<p>测试环境：https://dev.romens.cloud/mh/kapi/app/rm_se_b2c_oms/GoodsType 获取ERP商品分类详细信息</p>
+<h3 id="31-请求描述">3.1 请求描述</h3>
+<ol>
+<li>请求方式: POST</li>
+<li>请求URL :mh/kapi/app/rm_se_b2c_oms/GoodsType</li>
+<li>编码格式: application/json</li>
+<li>是否需要登录: 是</li>
+</ol>
+<h3 id="32-请求参数说明">3.2  请求参数说明</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>是否必填</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td>string</td>
+<td>是</td>
+<td>商品分类编码</td>
+</tr>
+<tr>
+<td>NAME</td>
+<td>string</td>
+<td>是</td>
+<td>商品分类名称</td>
+</tr>
+<tr>
+<td>FPARENTID</td>
+<td>string</td>
+<td>否</td>
+<td>上级分类编码</td>
+</tr>
+<tr>
+<td>HELPCODE</td>
+<td>string</td>
+<td>否</td>
+<td>助记码</td>
+</tr>
+<tr>
+<td>sourceSys</td>
+<td>string</td>
+<td>是</td>
+<td>来源系统（G3_ERP）</td>
+</tr>
+<tr>
+<td>owner</td>
+<td>string</td>
+<td>是</td>
+<td>业务组织	rmcloud（暂时，后期可能有多个）康美用Org-00004</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-请求示例">3.3  请求示例</h3>
+<pre><code class="language-json">   {
+ &quot;ID &quot;:&quot;3041&quot;,
+ &quot;NAME &quot;:&quot;挂号费&quot;,
+ &quot;FPARENTID &quot; :&quot;30&quot;,
+ &quot;HELPCODE&quot;:&quot;GHF&quot;,
+ &quot;sourceSys&quot; : &quot;G3ERP&quot;,
+ &quot;owner&quot;:&quot;rmcloud&quot;
+} 
+</code></pre>
+<h3 id="34-返回参数说明">3.4 返回参数说明</h3>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数类型</th>
+<th>参数说明</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>errorCode</td>
+<td>string</td>
+<td>状态码</td>
+<td></td>
+</tr>
+<tr>
+<td>message</td>
+<td>string</td>
+<td>错误信息</td>
+<td></td>
+</tr>
+<tr>
+<td>success</td>
+<td>boolean</td>
+<td>是否成功</td>
+<td></td>
+</tr>
+<tr>
+<td>data</td>
+<td>Object</td>
+<td>成功信息</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-返回结果示例">3.5 返回结果示例</h3>
+<pre><code class="language-json">{
+ &quot;code&quot;: 5002,
+ &quot;msg&quot;: &quot;非法授权&quot;
+}
+{
+ &quot;message&quot;: &quot;[:rmcloud000:不存在]&quot;,
+ &quot;code&quot;: &quot;400&quot;,
+ &quot;success&quot;: false
+}
+{
+ &quot;data&quot;: &quot;操作成功&quot;,
+ &quot;errorCode&quot;: &quot;success&quot;,
+ &quot;success&quot;: true
+}
+{
+ &quot;message&quot;: &quot;[来源系统: 不能为空]&quot;,
+ &quot;errorCode&quot;: &quot;fail&quot;,
+ &quot;success&quot;: false
+}
+
+</code></pre>
+
+            </div>
+          </article>
+        </div>
+        <div class="paper" data-aos="fade-in">
+          
+            <div class="next-post">
+              <div class="next">
+                下一篇
+              </div>
+              <a href="https://yhcyxx.github.io/post/hello-gridea/">
+                <h3 class="post-title">
+                  Hello Gridea
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+        
+          
+            <div class="paper" data-aos="fade-in">
+              <div id="gitalk-container"></div>
+            </div>
+          
+
+          
+        
+      </div>
+
+      <div class="sm-12 md-4 col sidebar">
+  <div class="paper info-container">
+    <img src="https://yhcyxx.github.io/images/avatar.png?v=1686730719718" class="no-responsive avatar">
+    <div class="text-muted">大家好！我是叶小忻，一名小萌新，很高兴你来参观我的博客，请多指教！</div>
+    <div class="social-container">
+      
+        
+          <a href="https://github.com/yhcyxx/yhcyxx.github.io" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      最新文章
+    </div>
+    <div class="row">
+      <ul>
+        
+          
+            <li>
+              <a href="https://yhcyxx.github.io/post/huo-qu-access_token/">获取access_token</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://yhcyxx.github.io/post/rpa-hui-chuan-ji-lu/">RPA回传记录</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://yhcyxx.github.io/post/hai-dian-ku-cun/">海典库存</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://yhcyxx.github.io/post/123123/">同步接口</a>
+            </li>
+          
+        
+          
+            <li>
+              <a href="https://yhcyxx.github.io/post/hello-gridea/">Hello Gridea</a>
+            </li>
+          
+        
+      </ul>
+    </div>
+  </div>
+  <div class="paper">
+    <div class="sidebar-title">
+      标签列表
+    </div>
+    <div class="row">
+      
+        <a href="https://yhcyxx.github.io/tag/b2PqyXhPN/" class="badge secondary">
+          Gridea
+        </a>
+      
+    </div>
+  </div>
+  <div class="paper">
+    Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://yhcyxx.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+
+
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+</script>
+
+
+
+  
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: [''],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  
+
+  
+
+
+
+
+  </body>
+</html>
